@@ -1,0 +1,46 @@
+name: "runner-cost-reporter"
+description: "Total GitHub Actions runner minutes per workflow over a window and optionally upsert a summary issue. Designed to run on a weekly schedule."
+author: "amoussa1229"
+branding:
+  icon: "dollar-sign"
+  color: "green"
+
+inputs:
+  window-days:
+    description: "How many days back to include, counting from now. Positive integer."
+    required: false
+    default: "7"
+  create-issue:
+    description: >-
+      Whether to upsert a summary issue ("true"/"false"). When "true", the
+      action finds the existing open report issue (by marker) and updates it,
+      or creates one. Requires issues: write permission.
+    required: false
+    default: "true"
+  issue-title:
+    description: >-
+      Title for the summary issue. The token {window} is replaced with the
+      window-days value.
+    required: false
+    default: "Runner usage report — last {window} days"
+  group-by:
+    description: 'How to group runner minutes: "workflow" (workflow name) or "actor" (triggering user login).'
+    required: false
+    default: "workflow"
+  github-token:
+    description: "Token used to list workflow runs and (when create-issue is true) upsert the report issue."
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  report:
+    description: >-
+      JSON array of {key, runs, minutes} objects sorted by minutes descending.
+  total-minutes:
+    description: "Total runner-minutes across all groups, rounded to an integer string."
+  issue-url:
+    description: 'HTML URL of the created/updated issue, or "" when no issue was written.'
+
+runs:
+  using: "node24"
+  main: "dist/index.js"
