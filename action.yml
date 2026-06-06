@@ -1,5 +1,5 @@
 name: "runner-cost-reporter"
-description: "Total GitHub Actions runner minutes per workflow over a window and optionally upsert a summary issue. Designed to run on a weekly schedule."
+description: "Total runner minutes per workflow over a window and optionally upsert a weekly summary issue."
 author: "amoussa1229"
 branding:
   icon: "dollar-sign"
